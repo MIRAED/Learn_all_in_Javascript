@@ -1,0 +1,27 @@
+# VS Code 설정 폴더
+.vscode/
+
+# macOS, Windows 시스템 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+
+# 백업/임시 파일
+*.tmp
+*.bak
+*~
+*.swp
+
+# 환경변수 파일 (API 키 등 포함될 수 있음)
+.env
+.env.local
+.env.*.local
+
+# node_modules (만약 SCSS 빌드나 도구 쓴다면)
+node_modules/
+
+# 빌드 결과물 (도구 사용하는 경우)
+dist/
+build/
