@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 function MainPage(){
     const [products, setProducts] = React.useState([]);
     React.useEffect(function(){
-        axios.get('https://38fc0e6c-2f47-4a3d-8a8a-ede5d0fa6d1f.mock.pstmn.io/products')
+        axios.get('http://localhost:8080/products')
         .then(function(result){
             const products = result.data.products;
             setProducts(products);
