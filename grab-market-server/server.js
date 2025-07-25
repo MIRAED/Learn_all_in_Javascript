@@ -3,10 +3,23 @@ const cors = require('cors'); //CORS(Cross-Origin Resource Sharing)를 허용하
 const app = express(); //Express 앱 객체 생성, 서버의 라우팅, 설정 등을 처리
 const port = 8080; //서버가 동작할 포트를 8080으로 설정
 const models = require('./models');
+const multer = require('multer');
+const upload = multer({
+	storage: multer.diskStorage({
+		destination: function(req, file, cb){
+			cb(null, 'uploads/') //cb 함수에서 upload/ 에 저장해 줄거야
+		},
+	    filename: function(req,file,cb){
+			cb(null, file.originalname)
+		}
+	
+	})
+});
 
 
 app.use(express.json()); //JSON 형태의 body를 요청해서 파싱 (예 : POST 요청에서 {"name": "축구공"} 이런 JSON 데이터를 읽을 수 있도록 함)
 app.use(cors()); // 다른 도메인에서 들어오는 요청도 허용 (주로 FE와 BE 서버가 다른 포트나 주소일 때 사용)
+app.use('/uploads', express.static('uploads'));
 
 
 app.get('/products',(req,res) => {  //'/products' 경로로 get method 요청이 있을 때, 함수 내용이 실행됨
@@ -28,17 +41,18 @@ app.get('/products',(req,res) => {  //'/products' 경로로 get method 요청이
 
 app.post('/products',(req,res) => {
     const body = req.body;
-	const {name, description, price, seller} = body;
+	const {name, description, price, seller, imageUrl} = body;
 
-	if(!name || !description || !price || !seller){
-		res.send("모든 필드를 입력해 주세요");
+	if(!name || !description || !price || !seller || !imageUrl){
+		res.status(400).send("모든 필드를 입력해 주세요");
 	}
 
 	models.Product.create({
 		name : name,
 		description,
 		price,
-		seller
+		seller,
+		imageUrl,
 	}).then((result) => {
 		console.log('상품 생성 결과 : ', result);
 		res.send({
@@ -46,7 +60,7 @@ app.post('/products',(req,res) => {
 		})
 	}).catch((error) => {
 		console.log(error);
-		res.send('상품 업로드에 문제가 발생했습니다');
+		res.status(400).send('상품 업로드에 문제가 발생했습니다');
 	})
 
 
@@ -66,7 +80,15 @@ app.get('/products/:id', (req,res) => {
 		})
 	}).catch((error) => {
 		console.error(error);
-		res.send('상품 조회에 문제가 발생했습니다');
+		res.status(400).send('상품 조회에 문제가 발생했습니다');
+	})
+})
+
+app.post('/image', upload.single('image'),(req, res) => {
+	const file = req.file;
+	console.log(file);
+	res.send({
+		imageUrl : file.path,
 	})
 })
 
