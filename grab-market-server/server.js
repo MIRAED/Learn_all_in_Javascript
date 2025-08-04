@@ -21,11 +21,24 @@ app.use(express.json()); //JSON 형태의 body를 요청해서 파싱 (예 : POS
 app.use(cors()); // 다른 도메인에서 들어오는 요청도 허용 (주로 FE와 BE 서버가 다른 포트나 주소일 때 사용)
 app.use('/uploads', express.static('uploads'));
 
+app.get('/banners', (req,res) => {
+	models.Banner.findAll({
+		limit: 2
+	}).then((result) => {
+		res.send({
+			banners : result,
+		});
+	}).catch((error) => {
+		console.error(error);
+		res.status(500).send('에러가 발생했습니다');
+	});
+})
+
 
 app.get('/products',(req,res) => {  //'/products' 경로로 get method 요청이 있을 때, 함수 내용이 실행됨
     models.Product.findAll({
 		order : [['createdAt', 'DESC']], //생성일자 기준 + 내림차순
-		attributes : ['id','name','price','createdAt','seller', 'imageUrl'],
+		attributes : ['id','name','price','createdAt','seller', 'imageUrl', 'soldout'],
 	}).then((result)=>{
 		console.log("PRODUCTS : ", result);
 		res.send({
@@ -65,6 +78,27 @@ app.post('/products',(req,res) => {
 
 
 });
+
+app.post("/purchase/:id", (req, res) => {
+	const {id} = req.params;
+	models.Product.update(
+		{
+			soldout: 1,
+		},
+		{
+			where: {
+				id,
+			},
+		}
+	).then((result) => {
+		res.send({
+			result : true,
+		});
+	}).catch((error) => {
+		console.error(error);
+		res.status(500).send("에러가 발생했습니다");
+	})
+})
 
 app.get('/products/:id', (req,res) => {
     const params = req.params;

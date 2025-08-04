@@ -5,7 +5,7 @@ import MainPage from "./main/index.js";
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
 import UploadPage from "./upload";
 import ProductPage from "./product";
-import {Button} from "antd";
+import {Button, message} from "antd";
 import {DownloadOutlined} from "@ant-design/icons";
 
 
@@ -33,7 +33,7 @@ function App() {
           <Route path="/" element={<MainPage></MainPage>}>
         
           </Route>
-          <Route path="/product/:id" element={<ProductPage></ProductPage>}>
+          <Route path="/products/:id" element={<ProductPage></ProductPage>}>
         
           </Route>
           
