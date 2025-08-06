@@ -19,7 +19,7 @@ jobs:
 
     - name: Install dependencies and build project
       run: |
-        cd ../grab-market-web
+        cd ../../grab-market-web
         npm install
         npm run build
 
