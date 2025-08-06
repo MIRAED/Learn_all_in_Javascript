@@ -17,11 +17,13 @@ jobs:
       with:
         node-version: '20' # 사용하는 Node.js 버전에 맞게 변경
 
-    - name: Install dependencies and build project
+    - name: Check current directory and build
       run: |
-        cd ../../grab-market-web
-        npm install
-        npm run build
+        pwd  # 현재 경로를 출력하는 명령어
+        ls -a # 현재 폴더의 파일 목록을 출력하는 명령어
+        # cd grab-market-web # 이 부분은 일단 주석 처리
+        # npm install
+        # npm run build
 
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@v0.5.1
