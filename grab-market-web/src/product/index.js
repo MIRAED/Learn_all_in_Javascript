@@ -23,7 +23,7 @@ function ProductPage(){
         }).catch(function(error){
             console.log(error);
         });
-    });
+    }, [id]);
     
     useEffect(function(){
         getProduct();
