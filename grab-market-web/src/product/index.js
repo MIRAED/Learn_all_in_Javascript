@@ -27,7 +27,7 @@ function ProductPage(){
     
     useEffect(function(){
         getProduct();
-    }, []);
+    }, [getProduct]);
     console.log(product);
 
     if(product === null){
@@ -50,11 +50,11 @@ function ProductPage(){
     return (
         <div>
             <div id='image-box'>
-                <img src={`${API_URL}/${product.imageUrl}`}/>
+                <img src={`${API_URL}/${product.imageUrl}`} alt='이미지 박스'/>
 
             </div>
             <div id='profile-box'>
-                <img src='/images/icons/avatar.png'/> 
+                <img src='/images/icons/avatar.png' alt='설명 박스 아이콘'/> 
                 <span>{product.seller}</span>
 
             </div>

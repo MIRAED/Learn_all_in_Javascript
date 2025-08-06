@@ -45,9 +45,9 @@ function UploadPage(){
                     <Upload name='image' action={`${API_URL}/image`} listType='picture' showUploadList={false}
                     onChange={onChangeImage}>
                     {
-                        imageUrl ? <img id='upload-img' src={`${API_URL}/${imageUrl}`}/> :
+                        imageUrl ? <img id='upload-img' src={`${API_URL}/${imageUrl}`} alt='이미지 경로'/> :
                         <div id='upload-img-placeholder'>
-                        <img src='/images/icons/camera.png'/>
+                        <img src='/images/icons/camera.png' alt='이미지 업로드 필요'/>
                         <span>이미지를 업로드해주세요.</span>
                         </div>
                     }

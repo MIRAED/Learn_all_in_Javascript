@@ -40,7 +40,7 @@ function MainPage(){
                     return (
                         <Link to={banner.href}>
                         <div id="banner">
-                            <img src={`${API_URL}/${banner.imageUrl}`} />
+                            <img src={`${API_URL}/${banner.imageUrl}`} alt='배너 이미지'/>
 
                         </div>
                         </Link>
@@ -59,7 +59,7 @@ function MainPage(){
                             }
                             <Link className='product-link' to={`/products/${product.id}`}>
                                 <div>
-                                    <img className="product-img" src={`${API_URL}/${product.imageUrl}`}/>
+                                    <img className="product-img" src={`${API_URL}/${product.imageUrl}`} alt='상품 이미지'/>
                                 </div>
                                 <div>
                                     <div className='product-contents'>
@@ -71,7 +71,7 @@ function MainPage(){
                                         </span>
                                         <div className='product-footer'>
                                             <div className='product-seller'>
-                                                <img className='product-avatar' src='images/icons/avatar.png'/>
+                                                <img className='product-avatar' src='images/icons/avatar.png' alt='상품 설명 아이콘'/>
                                                 <span className='product-date'>{product.seller}</span>
                                             </div>
                                             <span>{dayjs(product.createdAt).fromNow()}</span>

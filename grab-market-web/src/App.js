@@ -5,7 +5,7 @@ import MainPage from "./main/index.js";
 import {Routes, Route, Link, useNavigate} from 'react-router-dom';
 import UploadPage from "./upload";
 import ProductPage from "./product";
-import {Button, message} from "antd";
+import {Button} from "antd";
 import {DownloadOutlined} from "@ant-design/icons";
 
 
