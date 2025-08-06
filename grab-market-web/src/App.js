@@ -17,7 +17,7 @@ function App() {
       <div id="header">
           <div id="header-area">
             <Link to="/">
-            <img src="/images/icons/logo.png" />
+            <img src="/images/icons/logo.png" alt='머릿글 아이콘 로고'/>
             </Link>
             <Button size='large'
             onClick={function(){

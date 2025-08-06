@@ -2,7 +2,7 @@
 
 import {useParams} from 'react-router-dom';
 import axios from "axios";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import './index.css';
 import  {API_URL} from '../config/constants.js';
 import dayjs from 'dayjs';
@@ -15,7 +15,7 @@ function ProductPage(){
     const {id} = useParams();
     const [product, setProduct] = useState(null);
 
-    const getProduct = () => {
+    const getProduct = useCallback(() => {
         axios.get(`${API_URL}/products/${id}`).then(
         function(result){
             setProduct(result.data.product);
@@ -23,7 +23,7 @@ function ProductPage(){
         }).catch(function(error){
             console.log(error);
         });
-    }
+    });
     
     useEffect(function(){
         getProduct();
