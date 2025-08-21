@@ -5,6 +5,7 @@ import axios from 'axios';
 import {API_URL} from "../config/constants";
 import Avatar from "../assets/icons/avatar.png";
 import dayjs from "dayjs";
+import ProductCard from "../components/productCard";
 
 
 
@@ -12,6 +13,8 @@ import dayjs from "dayjs";
 export default function ProductScreen(props) {
     const {id} = props.route.params;
     const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState([]);
+
 
     useEffect(() => {
         axios.get(`${API_URL}/products/${id}`)
@@ -22,7 +25,13 @@ export default function ProductScreen(props) {
         .catch((error) => {
             console.error(error);
         });
-    }, [])
+        
+        axios.get(`${API_URL}/products/${id}/recommendation`).then((result) => {
+            setProducts(result.data.products);
+        }).catch((error) => {
+            console.error(error);
+        });
+    }, [id])
 
     const onPressButton = () => {
         if(product.soldout !== 1){
@@ -59,6 +68,15 @@ export default function ProductScreen(props) {
                 <Text style={styles.productDate}>{dayjs(product.createdAt).format("YYYY년 MM월 DD일")}</Text>
                 <Text style={styles.productDescription}>{product.description}</Text>
             </View>
+            <View style={styles.divider} />
+            <Text style={styles.recommendationHeadline}>추천 상품</Text>
+            <View style={styles.recommendationSection}>
+                {products.map((product, index) => {
+                    return (
+                        <ProductCard product={product} key={index} navigation={props.navigation} />
+                    );
+                })}
+            </View>
         </View>
         </ ScrollView>
             <TouchableOpacity onPress={onPressButton}>
@@ -90,6 +108,7 @@ const styles = StyleSheet.create({
     },
     productSection: {
         padding: 16,
+        
     },
     divider : {
         backgroundColor: "#e9ecef",
@@ -113,6 +132,7 @@ const styles = StyleSheet.create({
     productDescription: {
         marginTop: 16,
         fontSize: 17,
+        marginBottom: 32,
     },
     purchaseButton: {
         position: 'absolute',
@@ -137,5 +157,13 @@ const styles = StyleSheet.create({
         backgroundColor: 'gray',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    recommendationSection : {
+        alignItems : "center",
+        marginTop:16,
+        paddingBottom: 70,
+    },
+    recommendationHeadline: {
+        fontSize: 30,
     }
 });

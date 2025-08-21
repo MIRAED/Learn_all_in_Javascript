@@ -8,26 +8,40 @@ import  {API_URL} from '../config/constants.js';
 import dayjs from 'dayjs';
 import {Button} from 'antd';
 import {message} from 'antd';
+import ProductCard from '../components/productCard.js';
 
 
 
 function ProductPage(){
     const {id} = useParams();
     const [product, setProduct] = useState(null);
+    const [products, setProducts] = useState([]);
+
 
     const getProduct = useCallback(() => {
-        axios.get(`${API_URL}/products/${id}`).then(
-        function(result){
+        axios.get(`${API_URL}/products/${id}`)
+        .then((result) =>{
             setProduct(result.data.product);
 
-        }).catch(function(error){
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, [id]);
+
+    const getRecommendations = useCallback(() => {
+        axios.get(`${API_URL}/products/${id}/recommendation`)
+        .then((result) => {
+            setProducts(result.data.products);
+            console.log(result.data.products);
+        }).catch((error) => {
             console.log(error);
         });
     }, [id]);
     
-    useEffect(function(){
+    useEffect(() => {
         getProduct();
-    }, [getProduct]);
+        getRecommendations();
+    }, [getProduct, getRecommendations]);
     console.log(product);
 
     if(product === null){
@@ -64,8 +78,21 @@ function ProductPage(){
                 <div id='createdAt'>{dayjs(product.createdAt).format('YYYY년 MM월 DD일')}</div>
                 <Button id='purchase-button' size='large' type='primary' danger onClick={onClickPurchase}
                 disabled={product.soldout === 1}>재빨리 구매하기</Button>
-                <pre id='description'>{product.description}</pre>
+                <div id="description-box">
+                    <pre id='description'>{product.description}</pre>
+                </div>
+                <div>
+                    <h1>추천 상품</h1>
+                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                    {
+                        products.length > 0 ? (
+                            products.map((product, index) => {
+                                return <ProductCard key={index} product={product} />;
 
+                            })
+                        ) : (<p>추천 상품이 없습니다.</p>)}
+                    </div>
+                </div>
             </div>
         </div>
     );

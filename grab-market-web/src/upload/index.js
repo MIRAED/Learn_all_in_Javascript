@@ -9,8 +9,13 @@ import {useNavigate} from "react-router-dom";
 function UploadPage(){
     const [imageUrl, setImageUrl] = useState(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+
+    
 
     const onSubmit = (values) => {
+        setIsLoading(true);
+        
         axios.post(`${API_URL}/products`, {
             name : values.name,
             description : values.description,
@@ -23,6 +28,8 @@ function UploadPage(){
         }).catch((error) => {
             console.error(error);
             message.error(`에러가 발생했습니다. ${error.message}`)
+        }).finally(() => {
+            setIsLoading(false);
         })
     };
     const onChangeImage = (info) => {
@@ -100,8 +107,8 @@ function UploadPage(){
                   
                 </Form.Item>
                 <Form.Item>
-                    <Button id='submit-button' size='large' htmlType='submit'>
-                        문제 등록하기
+                    <Button id='submit-button' size='large' htmlType='submit' disabled={isLoading}>
+                        {isLoading ? '등록 중...' : '문제 등록하기'}
                     </Button>
                 </Form.Item>
 

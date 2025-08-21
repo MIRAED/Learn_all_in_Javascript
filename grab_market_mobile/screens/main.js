@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, ScrollView, Dimensions, TouchableOpacity, Alert, SafeAreaView} from "react-native";
-import Avatar from "../assets/icons/avatar.png";
 import {API_URL} from "../config/constants";
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -8,6 +7,7 @@ import relativetime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/ko";
 import Carousel from 'react-native-reanimated-carousel';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import ProductCard from "../components/productCard";
 
 
 dayjs.extend(relativetime);
@@ -69,35 +69,7 @@ export default function MainScreen(props) {
       {
         products.map((product, index) => {
           return (
-            <TouchableOpacity onPress={() => {
-              props.navigation.navigate("Product", {
-                id: product.id,
-              });
-            }}>
-            <View key={index} style={styles.productCard}>
-              {product.soldout === 1 && <View style={styles.productBlur}/>}
-              <View>
-              <Image 
-              style={styles.productImage} 
-              source={{
-                uri: `${API_URL}/${product.imageUrl}`,
-              }} 
-              resizeMode={"contain"}/>
-              </View>
-              <View style={styles.productContents}>
-                <Text style={styles.productName}>{product.name}</Text>
-                <Text style={styles.productPrice}>{product.price}원</Text>
-                <View style={styles.productFooter}>
-                  <View style={styles.productSeller}>
-                    <Image style={styles.productAvatar} source={Avatar} />
-                    <Text style={styles.productSellerName}>{product.seller}</Text>
-                  </View>
-                  <Text style={styles.productDate}>{dayjs(product.createdAt).fromNow()}</Text>
-                </View>
-              </View>
-              
-            </View>
-            </TouchableOpacity>
+            <ProductCard product={product} key={index} navigation={props.navigation} />
           )
         })
       }
